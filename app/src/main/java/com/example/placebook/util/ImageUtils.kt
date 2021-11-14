@@ -36,8 +36,8 @@ object ImageUtils {
     */
     private fun saveBytesToFile(context: Context, bytes: ByteArray, filename: String) {
 
-
         val outputStream: FileOutputStream
+
         try {
 
             /*

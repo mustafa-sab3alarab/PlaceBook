@@ -7,9 +7,11 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
 import com.example.placebook.R
 import com.example.placebook.adapter.BookMarkInfoWindowAdapter
 import com.example.placebook.databinding.ActivityMapsBinding
+import com.example.placebook.model.Bookmark
 import com.example.placebook.viewmodel.MapsViewModel
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -18,10 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPhotoRequest
@@ -53,6 +52,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val listOFNames = listOf<String>()
+
         // binding layout with UI
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -70,6 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         setupMapListeners()
+        createBookmarkMarkerObserver()
         getCurrentLocation()
     }
 
@@ -214,6 +216,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         marker?.tag = PlaceInfo(place, photo)
         marker?.showInfoWindow()
+    }
+
+
+    // Blue mark in Screen
+    private fun addPlaceMarker(bookmark: MapsViewModel.BookmarkMarkerView): Marker? {
+        val marker = mMap.addMarker(MarkerOptions()
+            .position(bookmark.location)
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            .alpha(0.8f))
+
+        marker?.tag = bookmark
+        return marker
+    }
+
+    // Display all of the bookmark markers
+    private fun displayAllBookmarks(bookmarks:List<MapsViewModel.BookmarkMarkerView>){
+        bookmarks.forEach { addPlaceMarker(it) }
+    }
+
+    // Observes the changes to the bookmark marker views in the maps View model
+    private fun createBookmarkMarkerObserver() {
+        mapsViewModel.getBookmarkMarkerView()?.observe(this){
+            mMap.clear()
+            it?.let {
+                displayAllBookmarks(it)
+            }
+        }
     }
 
 
