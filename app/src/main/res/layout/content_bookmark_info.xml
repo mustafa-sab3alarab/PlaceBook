@@ -42,5 +42,15 @@
             android:textColor="#ff7f7f7f"
             android:textSize="12sp"
             tools:text="555-121-1212" />
+
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#ff7f7f7f"
+            android:textSize="12sp"
+            tools:text="555-121-1212" />
     </LinearLayout>
 </LinearLayout>

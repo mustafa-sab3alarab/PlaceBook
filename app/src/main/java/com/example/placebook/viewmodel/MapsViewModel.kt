@@ -28,7 +28,6 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
         bookmark.longitude = place.latLng?.longitude ?: 0.0
         bookmark.name = place.name.toString()
         bookmark.phone = place.phoneNumber.toString()
-
         val newId = bookmarkRepo.addBookmark(bookmark)
         image?.let {
             bookmark.setImage(it, getApplication())
@@ -39,7 +38,10 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     // This class to add a blue mark after the store is placed into DataBase
     data class BookmarkMarkerView(
         var id: Long? = null,
-        var location: LatLng = LatLng(0.0, 0.0)
+        var location: LatLng = LatLng(0.0, 0.0),
+        var name: String = "",
+        var phone: String = "",
+        var notes : String = ""
     ){
         fun getImage(context: Context) = id?.let {
             ImageUtils.loadBitmapFromFile(context, Bookmark.generateImageFileName(it))
@@ -47,7 +49,7 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun bookmarkToMarkerView(bookmark: Bookmark) =
-        BookmarkMarkerView(bookmark.id, LatLng(bookmark.latitude, bookmark.longitude))
+        BookmarkMarkerView(bookmark.id, LatLng(bookmark.latitude, bookmark.longitude),bookmark.name,bookmark.phone,bookmark.notes)
 
 
     // This is a helper method that converts a Bookmark object from the repo into a BookmarkMarkerView object

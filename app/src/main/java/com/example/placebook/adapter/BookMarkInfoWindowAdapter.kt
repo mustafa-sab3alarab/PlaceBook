@@ -24,8 +24,11 @@ class BookMarkInfoWindowAdapter(val context: Activity) : GoogleMap.InfoWindowAda
     override fun getInfoContents(marker: Marker): View? {
         binding.title.text = marker.title ?: ""
         binding.phone.text = marker.snippet ?: ""
-        val imageView = binding.photo
 
+
+//        binding.notes.text =
+//
+        val imageView = binding.photo
         when (marker.tag) {
             is MapsActivity.PlaceInfo -> {
                 imageView.setImageBitmap((marker.tag as MapsActivity.PlaceInfo).image)
@@ -36,6 +39,8 @@ class BookMarkInfoWindowAdapter(val context: Activity) : GoogleMap.InfoWindowAda
                 imageView.setImageBitmap(bookMarkView.getImage(context))
             }
         }
+
+
         return binding.root
     }
 

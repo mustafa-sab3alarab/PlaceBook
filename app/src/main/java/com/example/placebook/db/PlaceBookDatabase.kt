@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.placebook.model.Bookmark
 
-@Database(entities = [Bookmark::class], version = 1)
+@Database(entities = [Bookmark::class], version = 2)
 abstract class PlaceBookDatabase : RoomDatabase() {
 
     // Access to dao
@@ -19,6 +19,7 @@ abstract class PlaceBookDatabase : RoomDatabase() {
         fun getInstance(context: Context): PlaceBookDatabase {
             if (instance == null) {
                 instance = Room.databaseBuilder(context.applicationContext, PlaceBookDatabase::class.java, "PlaceBook")
+                    .fallbackToDestructiveMigration()
                     .build()
             }
 

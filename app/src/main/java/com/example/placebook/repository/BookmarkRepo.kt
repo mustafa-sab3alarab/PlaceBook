@@ -26,4 +26,16 @@ class BookmarkRepo(context: Context) {
         get() {
             return db.bookmarkDao().loadAll()
         }
+
+    fun getLiveBookmark(bookmarkId: Long): LiveData<Bookmark> =
+        db.bookmarkDao().loadLiveBookmark(bookmarkId)
+
+
+    fun updateBookmark(bookmark: Bookmark) {
+        db.bookmarkDao().updateBookmark(bookmark)
+    }
+
+    fun getBookmark(bookmarkId: Long): Bookmark {
+        return db.bookmarkDao().loadBookmark(bookmarkId)
+    }
 }
